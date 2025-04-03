@@ -1,41 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useState } from 'react';
+import './App.css';
+import { puppyList } from './data.js';
 
 function App() {
-  const [count, setCount] = useState(0)
-  console.log(puppies)
+  const [featPupId, setFeatPupId] = useState(puppyList[0]?.id || null);
+  const featuredPup = puppyList.find((pup) => pup.id === featPupId);
+
   return (
-    <>
-      <div>
-      { 
-   puppies.map((puppy) => {
-     return <p>{puppy.name}</p>
-   })
-}
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <h1>Puppy Pals</h1>
+      <div className="puppy-list">
+        {puppyList.map((puppy) => (
+          <button
+            onClick={() => setFeatPupId(puppy.id)}
+            key={puppy.id}
+            className="puppy-name"
+          >
+            {puppy.name}
+          </button>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      
+      {featuredPup && (
+        <div className="details">
+          <h2>{featuredPup.name}</h2>
+          <ul>
+            <li>Age: {featuredPup.age}</li>
+            <li>Email: {featuredPup.email}</li>
+            <li>
+              Tricks: {featuredPup.tricks.length > 0 ? (
+                <ul>
+                  {featuredPup.tricks.map(trick => (
+                    <li key={trick.id}>{trick.title}</li>
+                  ))}
+                </ul>
+              ) : 'None'}
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
-const [featPupId, setFeatPupId] = useState(null)
-export default App
+
+export default App;
+
